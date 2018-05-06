@@ -1,4 +1,4 @@
-package compress_test
+package gzip_test
 
 import (
 	"fmt"
@@ -14,7 +14,7 @@ func Example() {
 		fmt.Fprint(w, "Hello")
 	})
 
-	http.ListenAndServe(":8080", compress.Handle(mux))
+	http.ListenAndServe(":8080", gzip.Handle(mux))
 }
 
 func ExampleHandle() {
@@ -24,11 +24,11 @@ func ExampleHandle() {
 		fmt.Fprint(w, "Hello")
 	})
 
-	http.ListenAndServe(":8080", compress.Handle(mux))
+	http.ListenAndServe(":8080", gzip.Handle(mux))
 }
 
 func ExampleHandleFunc() {
-	http.Handle("/", compress.HandleFunc(func(w http.ResponseWriter, r *http.Request) {
+	http.Handle("/", gzip.HandleFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Hello")
 	}))
 

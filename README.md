@@ -1,27 +1,26 @@
-# [![gowww](https://avatars.githubusercontent.com/u/18078923?s=20)](https://github.com/gowww) compress [![GoDoc](https://godoc.org/github.com/gowww/compress?status.svg)](https://godoc.org/github.com/gowww/compress) [![Build](https://travis-ci.org/gowww/compress.svg?branch=master)](https://travis-ci.org/gowww/compress) [![Coverage](https://coveralls.io/repos/github/gowww/compress/badge.svg?branch=master)](https://coveralls.io/github/gowww/compress?branch=master) [![Go Report](https://goreportcard.com/badge/github.com/gowww/compress)](https://goreportcard.com/report/github.com/gowww/compress) ![Status Stable](https://img.shields.io/badge/status-stable-brightgreen.svg)
+# gzip
 
-Package [compress](https://godoc.org/github.com/gowww/compress) provides a clever gzip compressing handler.
+Package [gzip](https://godoc.org/github.com/zengabor/gzip) provides a gzip compressing handler.
 
-It takes care to not handle small contents, or contents that are already compressed (like JPEG, MPEG or PDF).  
-Trying to gzip them not only wastes CPU but can potentially increase the response size.
+(Original package which includes clever MIME type checking: [compress](https://godoc.org/github.com/gowww/compress). It takes care to not handle small contents, or contents that are already compressed (like JPEG, MPEG or PDF). Trying to gzip them not only wastes CPU but can potentially increase the response size.)
 
 ## Installing
 
 1. Get package:
 
 	```Shell
-	go get -u github.com/gowww/compress
+	go get -u github.com/zengabor/gzip
 	```
 
 2. Import it in your code:
 
 	```Go
-	import "github.com/gowww/compress"
+	import "github.com/zengabor/gzip"
 	```
 
 ## Usage
 
-To wrap an [http.Handler](https://golang.org/pkg/net/http/#Handler), use [Handle](https://godoc.org/github.com/gowww/compress#Handle):
+To wrap an [http.Handler](https://golang.org/pkg/net/http/#Handler), use [Handle](https://godoc.org/github.com/zengabor/gzip#Handle):
 
 ```Go
 mux := http.NewServeMux()
@@ -30,13 +29,13 @@ mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "Hello")
 })
 
-http.ListenAndServe(":8080", compress.Handle(handler))
+http.ListenAndServe(":8080", gzip.Handle(handler))
 ```
 
-To wrap an [http.HandlerFunc](https://golang.org/pkg/net/http/#HandlerFunc), use [HandleFunc](https://godoc.org/github.com/gowww/compress#HandleFunc):
+To wrap an [http.HandlerFunc](https://golang.org/pkg/net/http/#HandlerFunc), use [HandleFunc](https://godoc.org/github.com/zengabor/gzip#HandleFunc):
 
 ```Go
-http.Handle("/", compress.HandleFunc(func(w http.ResponseWriter, r *http.Request) {
+http.Handle("/", gzip.HandleFunc(func(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "Hello")
 }))
 

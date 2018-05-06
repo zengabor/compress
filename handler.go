@@ -1,5 +1,5 @@
-// Package compress provides a clever gzip compressing handler.
-package compress
+// Package provides a gzip compressing handler.
+package gzip
 
 import (
 	"bufio"
@@ -19,7 +19,7 @@ const gzippableMinSize = 1400
 
 var gzipPool = sync.Pool{New: func() interface{} { return gzip.NewWriter(nil) }}
 
-// A handler provides a clever gzip compressing handler.
+// A handler provides a gzip compressing handler.
 type handler struct {
 	next http.Handler
 }
