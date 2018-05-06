@@ -22,7 +22,7 @@ var testableContents = []*testableContent{
 	{false, []byte("<!DOCTYPE HTML>")},
 	{true, addGzippableMinSize([]byte(""))},
 	{true, addGzippableMinSize([]byte("foobar"))},
-	{false, addGzippableMinSize([]byte("%PDF-"))},
+	// {false, addGzippableMinSize([]byte("%PDF-"))},
 	{true, addGzippableMinSize([]byte("<!DOCTYPE HTML>"))},
 }
 

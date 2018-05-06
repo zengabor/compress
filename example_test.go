@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/gowww/compress"
+	"github.com/zengabor/gzip"
 )
 
 func Example() {

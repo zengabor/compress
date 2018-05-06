@@ -17,38 +17,6 @@ import (
 // So if the response with the TCP headers already fits into a single packet, there will be no gain from gzip.
 const gzippableMinSize = 1400
 
-// notGzippableTypes is the list of media types having a compressed content by design.
-// Gzip will not be applied to any of these content types.
-//
-// For best performance, only the most common officials (and future officials) are listed.
-//
-// Official media types: http://www.iana.org/assignments/media-types/media-types.xhtml
-var notGzippableTypes = map[string]struct{}{
-	"application/font-woff": {},
-	"application/gzip":      {},
-	"application/pdf":       {},
-	"application/zip":       {},
-	"audio/mp4":             {},
-	"audio/mpeg":            {},
-	"audio/webm":            {},
-	"font/otf":              {},
-	"font/ttf":              {},
-	"font/woff":             {},
-	"font/woff2":            {},
-	"image/gif":             {},
-	"image/jpeg":            {},
-	"image/png":             {},
-	"image/webp":            {},
-	"video/h264":            {},
-	"video/h265":            {},
-	"video/mp4":             {},
-	"video/mpeg":            {},
-	"video/ogg":             {},
-	"video/vp8":             {},
-	"video/vp9":             {},
-	"video/webm":            {},
-}
-
 var gzipPool = sync.Pool{New: func() interface{} { return gzip.NewWriter(nil) }}
 
 // A handler provides a clever gzip compressing handler.
@@ -128,14 +96,6 @@ func (cw *compressWriter) Write(b []byte) (int, error) {
 	if ct == "" {
 		ct = http.DetectContentType(append(cw.firstBytes.Bytes(), b...))
 		cw.ResponseWriter.Header().Set("Content-Type", ct)
-	}
-	if i := strings.IndexByte(ct, ';'); i >= 0 {
-		ct = ct[:i]
-	}
-	ct = strings.ToLower(ct)
-	if _, ok := notGzippableTypes[ct]; ok {
-		cw.gzipCheckingDone()
-		return cw.ResponseWriter.Write(b)
 	}
 
 	cw.ResponseWriter.Header().Del("Content-Length") // Because the compressed content will have a new length.
